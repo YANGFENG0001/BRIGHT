@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import models
+from torchvision.models import ResNet50_Weights
 
 class ASPP(nn.Module):
     def __init__(self, in_channels, out_channels, atrous_rates):
@@ -33,11 +34,12 @@ class ASPP(nn.Module):
 
 
 class DeepLabV3Plus(nn.Module):
-    def __init__(self, in_channels=3, num_classes=4, atrous_rates=[6, 12, 18], output_stride=16):
+    def __init__(self, in_channels=3, num_classes=4, atrous_rates=[6, 12, 18], output_stride=16, pretrained=True):
         super(DeepLabV3Plus, self).__init__()
         
         # Load a pre-trained ResNet-50 model
-        self.backbone = models.resnet50(pretrained=True)
+        weights = ResNet50_Weights.DEFAULT if pretrained else None
+        self.backbone = models.resnet50(weights=weights)
         
         # Modify the first convolutional layer to accept different number of input channels
         if in_channels != 3:

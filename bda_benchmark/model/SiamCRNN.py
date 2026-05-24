@@ -11,6 +11,7 @@ import torchvision
 
 import torch
 import torch.nn as nn
+from torchvision.models import ResNet18_Weights
 from torchvision.models.feature_extraction import create_feature_extractor
 
 
@@ -44,13 +45,13 @@ class ResBlock(nn.Module):
 
 
 class SiamCRNN(nn.Module):
-    def __init__(self):
+    def __init__(self, pretrained=True):
         super(SiamCRNN, self).__init__()
         expansion = 1
 
-       
-        self.encoder_1 = torchvision.models.resnet18(pretrained=True)
-        self.encoder_2 = torchvision.models.resnet18(pretrained=True)
+        weights = ResNet18_Weights.DEFAULT if pretrained else None
+        self.encoder_1 = torchvision.models.resnet18(weights=weights)
+        self.encoder_2 = torchvision.models.resnet18(weights=weights)
         return_nodes = {
             'layer1': 'feat1',
             'layer2': 'feat2',

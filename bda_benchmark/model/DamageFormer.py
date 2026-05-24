@@ -70,12 +70,13 @@ class ResBlock(nn.Module):
 
 
 class DamageFormer(nn.Module):
-    def __init__(self):
+    def __init__(self, pretrained=True):
         super(DamageFormer, self).__init__()
 
         # if it is multimodal task (if not, please use pure-siamese architecture)
-        self.encoder_1 = SwinTransformerFeatureExtractor(swin_transformer = swin_t(weights=Swin_T_Weights), depths=[2, 2, 6, 2]) # getattr(mix_transformer, backbone)()
-        self.encoder_2 = SwinTransformerFeatureExtractor(swin_transformer = swin_t(weights=Swin_T_Weights), depths=[2, 2, 6, 2]) # getattr(mix_transformer, backbone)()
+        weights = Swin_T_Weights.DEFAULT if pretrained else None
+        self.encoder_1 = SwinTransformerFeatureExtractor(swin_transformer = swin_t(weights=weights), depths=[2, 2, 6, 2]) # getattr(mix_transformer, backbone)()
+        self.encoder_2 = SwinTransformerFeatureExtractor(swin_transformer = swin_t(weights=weights), depths=[2, 2, 6, 2]) # getattr(mix_transformer, backbone)()
 
         self.fusion_layer_1 = ResBlock(in_channels=1440, out_channels=256, stride=1, downsample=nn.Conv2d(in_channels=1440, out_channels=256, kernel_size=1))
         self.fusion_layer_2 = ResBlock(in_channels=1440, out_channels=256, stride=1, downsample=nn.Conv2d(in_channels=1440, out_channels=256, kernel_size=1))
