@@ -1,0 +1,2 @@
+model,samples,final_oa_pct,final_miou_pct,f1loc_pct,f1clf_hmean_pct,iou_background_pct,iou_intact_pct,iou_damaged_pct,iou_destroyed_pct
+DeepLabV3Plus,697,95.97275308420188,63.927100981660324,88.81067816678348,63.902779648022914,96.26224435633233,75.69042747307192,26.545322218203204,57.21040987903384

@@ -200,8 +200,9 @@ def evaluate(args):
         pred_original_dir.mkdir(parents=True, exist_ok=True)
         pred_colored_dir.mkdir(parents=True, exist_ok=True)
 
+    progress_iter = loader if args.no_progress else tqdm(loader, desc=f"eval {args.model}")
     with torch.no_grad():
-        for pre, post, loc_label, clf_label, data_id in tqdm(loader, desc=f"eval {args.model}"):
+        for pre, post, loc_label, clf_label, data_id in progress_iter:
             pre = pre.to(device=device, dtype=torch.float32)
             post = post.to(device=device, dtype=torch.float32)
             data_id = data_id[0]
@@ -231,7 +232,8 @@ def evaluate(args):
 
             final_evaluator.add_batch(clf_label, final_pred)
             loc_evaluator.add_batch(loc_label, loc_pred)
-            clf_evaluator.add_batch(clf_label, clf_pred)
+            building_mask = loc_label > 0
+            clf_evaluator.add_batch(clf_label[building_mask], clf_pred[building_mask])
             add_group_metrics(event_evaluators, data_id, clf_label, final_pred)
             add_group_metrics(type_evaluators, data_id, clf_label, final_pred)
 
@@ -299,6 +301,7 @@ def main():
     parser.add_argument("--final_mode", choices=["clf", "mask"], default="clf")
     parser.add_argument("--save_predictions", action="store_true")
     parser.add_argument("--limit", type=int, default=None, help="Only evaluate the first N ids. Intended for smoke tests.")
+    parser.add_argument("--no_progress", action="store_true", help="Disable tqdm progress output in log files.")
     args = parser.parse_args()
     evaluate(args)
 

@@ -14,7 +14,8 @@
 
 - 当前官方 BRIGHT 仓库没有 `ChangeOS` 和 `ChangeMamba` 的模型实现或 infer 脚本。
 - 官方 Zenodo 权重页 `15349462` 可见 `DamageFormer`、`DeepLabV3Plus`、`SiamAttnUNet`、`SiamCRNN`、`UNet` 的 standard ML 权重，以及若干 cross-event 权重。
-- `ChangeMamba` 出现在论文 Table 5/6 和 Appendix D 的实现说明中，但尚未在当前仓库代码中发现可直接运行的实现。
+- `ChangeMamba` 出现在论文 Table 5/6 和 Appendix D 的实现说明中，但尚未在当前 BRIGHT 仓库代码中发现可直接运行的实现。
+- 独立 ChangeMamba 仓库提供 BRIGHT 训练/测试说明和 `ckpt_ChangeMamba_bright_standard_ML_split.pth`，但依赖 `kernels/selective_scan` CUDA 扩展，官方说明为 Linux 环境。
 
 ## 指标映射
 
@@ -22,6 +23,7 @@
 - `F1loc`：二类建筑定位 F1，背景为 0，任意建筑类为 1。
 - `F1clf`：官方代码中保留的计算方式倾向于对非背景三类 F1 做调和平均；本次评估脚本按该方式记录 `clf_f1_hmean`。
 - 官方 decoupled 模型论文描述为 `Ydam = Yloc * Yclf`，但仓库 infer 脚本当前最终输出直接使用 `argmax(output_clf)`，未乘定位图。本次脚本默认使用仓库 infer 行为，并保留 `--final_mode mask` 可选模式。
+- `F1clf` 按官方 infer 脚本中保留的注释逻辑，只在 `labels_loc > 0` 的建筑像素范围内累计混淆矩阵。
 
 ## 风险与缺口
 

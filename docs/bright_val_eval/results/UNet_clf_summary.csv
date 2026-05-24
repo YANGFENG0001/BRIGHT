@@ -1,0 +1,2 @@
+model,samples,final_oa_pct,final_miou_pct,f1loc_pct,f1clf_hmean_pct,iou_background_pct,iou_intact_pct,iou_damaged_pct,iou_destroyed_pct
+UNet,697,95.95050018179194,63.36962519929573,89.0705316493523,62.62958549270535,96.34286856927093,75.34516629581776,25.399076509566783,56.391389422527446

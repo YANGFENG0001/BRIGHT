@@ -1,0 +1,2 @@
+model,samples,final_oa_pct,final_miou_pct,f1loc_pct,f1clf_hmean_pct,iou_background_pct,iou_intact_pct,iou_damaged_pct,iou_destroyed_pct
+SiamAttnUNet,697,95.98001291283234,65.00965254248294,89.20192491045604,67.52958283407752,96.26818990146292,76.09976631872765,30.448838872522572,57.22181507721862
